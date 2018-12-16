@@ -14,7 +14,7 @@ class sanaScraping:
                                :html.index('<footer>')]
         re_pattern = re.compile(r"<b>.*?</b>")
         self.category = list(map(lambda x: x.strip("<b>").strip(
-            "</b>").replace('\u3000', ''),  re.findall(re_pattern, html)))
+            "</b>").replace('\u3000', '').replace('\u2026', '').replace('\u201d', '').replace('\u2018', ''),  re.findall(re_pattern, html)))
         self.mp3_list = list(map(self.__pickMp3, re.split(re_pattern, html)))[1:]
 
     def getData(self):
