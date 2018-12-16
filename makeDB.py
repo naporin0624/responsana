@@ -28,11 +28,9 @@ class sanaScraping:
         return mp3_list
 
 if __name__ == "__main__":
-    # MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
-    MONGO_URL = os.environ.get('MONGOHQ_URL')
-    if MONGO_URL:
-        client = MongoClient(MONGO_URL)
-        db = client[urlparse(MONGO_URL).path[1:]]
+    MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
+    client = MongoClient(MONGO_URL)
+    db = client[urlparse(MONGO_URL).path[1:]]
     co = db.responsana
     for data in sanaScraping().getData():
         co.update({"category": data["category"]}, {"category": data["category"], "contents":data["contents"]}, upsert = True )

@@ -3,7 +3,6 @@ from lxml.html import *
 from urllib.parse import urljoin, urlparse
 import os
 from flask_restful import Resource, reqparse
-from pymongo import MongoClient
 from pydub import AudioSegment
 
 
