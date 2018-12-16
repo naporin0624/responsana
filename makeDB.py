@@ -1,3 +1,11 @@
+from requests import get
+from lxml.html import *
+from urllib.parse import urljoin, urlparse
+import os
+from flask_restful import Resource, reqparse
+from pymongo import MongoClient
+import re
+
 class sanaScraping:
     def __init__(self):
         html = get("https://www.natorisana.love").content.decode()
