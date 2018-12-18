@@ -24,7 +24,7 @@ def error_handler(error):
 
 # apiの登録
 api.add_resource(sanaButtonJson.getCategory, "/api/sana/category")
-api.add_resource(sanaButtonJson.getContents, "/api/sana/names")
+api.add_resource(sanaButtonJson.getContentsNames, "/api/sana/names")
 api.add_resource(sanaButtonJson.getContentsURL, "/api/sana/voiceurl")
 
 if __name__ == "__main__":
