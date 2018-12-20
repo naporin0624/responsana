@@ -3,6 +3,7 @@ from flask_cors import CORS
 from werkzeug.routing import Rule
 from flask_restful import Api
 import sanaButtonJson
+import onyankoButtonJson
 app = Flask(__name__)
 CORS(app)
 api = Api(app)
@@ -26,7 +27,9 @@ def error_handler(error):
 api.add_resource(sanaButtonJson.getCategory, "/api/sana/category")
 api.add_resource(sanaButtonJson.getContentsNames, "/api/sana/names")
 api.add_resource(sanaButtonJson.getContentsURL, "/api/sana/voiceurl")
-
+api.add_resource(onyankoButtonJson.getCategory, "/api/onyanko/category")
+api.add_resource(onyankoButtonJson.getContentsNames, "/api/onyanko/names")
+api.add_resource(onyankoButtonJson.getContentsURL, "/api/onyanko/voiceurl")
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", debug=True)
     app.run(host="0.0.0.0", debug=False)
