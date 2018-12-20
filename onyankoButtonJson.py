@@ -11,14 +11,14 @@ db = client[urlparse(MONGO_URL).path[1:]]
 co = db.responyanko
 
 
-class getCategory(Resource):
+class getCategory1(Resource):
     def get(self):
         # print("start get category")
         res = {"categorylist": sorted([obj["category"] for obj in co.find()])}
         return res
 
 
-class getContentsNames(Resource):
+class getContentsNames1(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument("category", required=True)
 
@@ -37,7 +37,7 @@ class getContentsNames(Resource):
         return res
 
 
-class getContentsURL(Resource):
+class getContentsURL1(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
     parser.add_argument("category", required=True)
     parser.add_argument("name", required=True)
