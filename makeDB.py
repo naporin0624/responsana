@@ -25,9 +25,8 @@ class voiceScraping(metaclass=ABCMeta):
         self.mp3_name_list = self.getNameList(html)
 
     #いらないタグを削除するメソッド
-    @abstractmethod
     def easyHandleHTML(self, html):
-        pass
+        return html
 
     #配信タイトルとかボタンカテゴリを取得するメソッド
     @abstractmethod
