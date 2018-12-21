@@ -5,7 +5,7 @@ import os
 from flask_restful import Resource, reqparse
 # from pydub import AudioSegment
 from pymongo import MongoClient
-MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
+MONGO_URL = os.environ["MONGO_URL"]
 client = MongoClient(MONGO_URL)
 db = client[urlparse(MONGO_URL).path[1:]]
 co = db.responyanko
@@ -54,7 +54,8 @@ class getContentsURL1(Resource):
 if __name__ == "__main__":
     from urllib.parse import urljoin, urlparse
     from pymongo import MongoClient
-    MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
+    import os
+    MONGO_URL = os.environ["MONGO_URL"]
     client = MongoClient(MONGO_URL)
     db = client[urlparse(MONGO_URL).path[1:]]
     co = db.responsana

@@ -27,9 +27,9 @@ def error_handler(error):
 api.add_resource(sanaButtonJson.getCategory, "/api/sana/category")
 api.add_resource(sanaButtonJson.getContentsNames, "/api/sana/names")
 api.add_resource(sanaButtonJson.getContentsURL, "/api/sana/voiceurl")
-api.add_resource(onyankoButtonJson.getCategory1, "/api/onyanko/category")
-api.add_resource(onyankoButtonJson.getContentsNames1, "/api/onyanko/names")
-api.add_resource(onyankoButtonJson.getContentsURL1, "/api/onyanko/voiceurl")
+# api.add_resource(onyankoButtonJson.getCategory1, "/api/onyanko/category")
+# api.add_resource(onyankoButtonJson.getContentsNames1, "/api/onyanko/names")
+# api.add_resource(onyankoButtonJson.getContentsURL1, "/api/onyanko/voiceurl")
 if __name__ == "__main__":
     # app.run(host="0.0.0.0", debug=True)
     app.run(host="0.0.0.0", debug=False)
