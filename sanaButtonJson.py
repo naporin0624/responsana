@@ -7,8 +7,7 @@ from flask_restful import Resource, reqparse
 from pymongo import MongoClient
 from requests import get
 
-# MONGO_URL = os.environ["MONGO_URL"]
-MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
+MONGO_URL = os.environ["MONGO_URL"]
 client = MongoClient(MONGO_URL)
 db = client[urlparse(MONGO_URL).path[1:]]
 co = db.responsana
