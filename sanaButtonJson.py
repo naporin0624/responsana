@@ -1,20 +1,67 @@
-from requests import get
-from lxml.html import *
-from urllib.parse import urljoin, urlparse
+import json
 import os
+from urllib.parse import urljoin, urlparse
+
 from flask_restful import Resource, reqparse
 # from pydub import AudioSegment
 from pymongo import MongoClient
-MONGO_URL = os.environ["MONGO_URL"]
+from requests import get
+
+# MONGO_URL = os.environ["MONGO_URL"]
+MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
 client = MongoClient(MONGO_URL)
 db = client[urlparse(MONGO_URL).path[1:]]
 co = db.responsana
+co_temp = db.sanatemplate
+
+
+class makeTemplate(Resource):
+    parser = reqparse.RequestParser(bundle_errors=True)
+    parser.add_argument("template", action='append')
+    parser.add_argument("name", required=True)
+
+    def get(self):
+        args = self.parser.parse_args()
+        templateJson = co_temp.find_one({"name": args["name"]})
+        if templateJson is None:
+            res = {"voiceLinkTexts": []}
+        else:
+            res = {'voiceLinkTexts': templateJson["template"]}
+        return res
+
+    def post(self):
+        args = self.parser.parse_args()
+        if args["name"] not in showDataTemplate().get()["tempNameList"]:
+            name = args["name"]
+            template = args["template"]
+            co_temp.insert({'name': name, 'template': template})
+            return {"msg": "保存完了"}
+        else:
+            return {"msg": "もう登録されています"}
+
+    def put(self):
+        args = self.parser.parse_args()
+        selectJson = {"name": args["name"]}
+        setJson = {"name": args["name"], "template": args["template"]}
+        co_temp.update(selectJson, setJson, upsert=True)
+
+
+class showDataTemplate(Resource):
+    def get(self):
+        record = list(co_temp.find())
+        if len(record) > 0:
+            name_list = list(map(lambda x: x["name"], record))
+            res = {"tempNameList": name_list}
+        else:
+            res = {"tempNameList": []}
+        return res
 
 
 class getCategory(Resource):
     def get(self):
-        # print("start get category")
-        res = {"categorylist": sorted([obj["category"] for obj in co.find()])}
+        record = list(co.find())
+        title_list = list(map(lambda x: x["category"], record))
+        res = {"categorylist": sorted(title_list)}
         return res
 
 
@@ -23,16 +70,10 @@ class getContentsNames(Resource):
     parser.add_argument("category", required=True)
 
     def get(self):
-        # print("start get contents")
         args = self.parser.parse_args()
-        # print("category:", args["category"])
-        name_list = [
-            obj["names"] for obj in co.find({
-                "category": args["category"]
-            })
-        ][0]
+        record = list(co.find({"category": args["category"]}))[0]
+        name_list = record["names"]
         name_list.sort()
-        # data = list(map(self.__makeDict, urllist))
         res = {"voicelist": name_list}
         return res
 
@@ -44,7 +85,7 @@ class getContentsURL(Resource):
 
     def get(self):
         args = self.parser.parse_args()
-        record = [x for x in co.find({"category": args["category"]})][0]
+        record = list(co.find({"category": args["category"]}))[0]
         idx = record["names"].index(args["name"])
         url = record["contents"][idx]
         res = {"voiceurl": url}
@@ -54,11 +95,26 @@ class getContentsURL(Resource):
 if __name__ == "__main__":
     from urllib.parse import urljoin, urlparse
     from pymongo import MongoClient
-    MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
     client = MongoClient(MONGO_URL)
     db = client[urlparse(MONGO_URL).path[1:]]
     co = db.responsana
-    record = [x for x in co.find({"category": "ぽんぽこ24 リターンズ（神対応 名取さな）"})][0]
-    idx = record["names"].index('まな板！？')
-    url = record["contents"][idx]
-    print(url)
+
+    # record = [x for x in co.find({"category": "ぽんぽこ24 リターンズ（神対応 名取さな）"})]
+    # record = list(co.find({"category": "ぽんぽこ24 リターンズ（神対応 名取さな）"}))[0]
+    # record = list(co_temp.find())
+    # name_list = list(map(lambda x: x["names"], record))
+    # print(name_list)
+    # print(record)
+    # print(record, len(record), len(record[0]), type(record[0]))
+    # templateJson = co_temp.find_one({"name": "abcdef"})
+    # test = templateJson["template"][0].replace('"', '"')
+    import time
+    s = time.time()
+    # record = [x for x in co.find()]
+    res = {"categorylist": sorted([obj["category"] for obj in co.find()])}
+    print(time.time() - s)
+    # record = list(record)
+    # title_list = list(map(lambda x: x["category"], record))
+    # res = {"categorylist": sorted(title_list)}
+    # print(time.time() - s)
+    # print(test)
