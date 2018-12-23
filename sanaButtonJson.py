@@ -23,14 +23,14 @@ class makeTemplate(Resource):
         args = self.parser.parse_args()
         templateJson = co_temp.find_one({"name": args["name"]})
         if templateJson is None:
-            res = {"voiceLinkTexts": []}
+            res = {"retentionData": []}
         else:
-            res = {'voiceLinkTexts': templateJson["template"]}
+            res = {'retentionData': templateJson["template"]}
         return res
 
     def post(self):
         args = self.parser.parse_args()
-        if args["name"] not in showDataTemplate().get()["tempNameList"]:
+        if args["name"] not in showDataTemplate().get()["templateNameList"]:
             name = args["name"]
             template = args["template"]
             co_temp.insert({'name': name, 'template': template})
@@ -50,9 +50,9 @@ class showDataTemplate(Resource):
         record = list(co_temp.find())
         if len(record) > 0:
             name_list = list(map(lambda x: x["name"], record))
-            res = {"tempNameList": name_list}
+            res = {"templateNameList": name_list}
         else:
-            res = {"tempNameList": []}
+            res = {"templateNameList": []}
         return res
 
 
@@ -60,7 +60,7 @@ class getCategory(Resource):
     def get(self):
         record = list(co.find())
         title_list = list(map(lambda x: x["category"], record))
-        res = {"categorylist": sorted(title_list)}
+        res = {"categoryList": sorted(title_list)}
         return res
 
 
@@ -73,7 +73,7 @@ class getContentsNames(Resource):
         record = list(co.find({"category": args["category"]}))[0]
         name_list = record["names"]
         name_list.sort()
-        res = {"voicelist": name_list}
+        res = {"voiceList": name_list}
         return res
 
 
@@ -87,7 +87,7 @@ class getContentsURL(Resource):
         record = list(co.find({"category": args["category"]}))[0]
         idx = record["names"].index(args["name"])
         url = record["contents"][idx]
-        res = {"voiceurl": url}
+        res = {"voiceURL": url}
         return res
 
 
