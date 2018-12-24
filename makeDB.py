@@ -45,8 +45,9 @@ class voiceScraping(metaclass=ABCMeta):
 
     #u付き文字を削除するメソッド
     def __removeStr(self, x):
-        re_sub = re.compile(r'\u[0-9]+')
-        return re.sub(re_sub, '', x)
+        re_sub = re.compile(r'u[0-9]+')
+        result = re.sub(re_sub, '', x).replace("\\", "")
+        return result
 
     #得たデータをカテゴリごとにまとめて返すメソッド
     def getData(self):
@@ -124,7 +125,7 @@ class onyankoScraping(voiceScraping):
 
 
 if __name__ == "__main__":
-    MONGO_URL = 'mongodb://heroku_6vdmtkbn:ng692uvshhevmr483e7v2ua0b1@ds135724.mlab.com:35724/heroku_6vdmtkbn'
+    MONGO_URL = os.environ["MONGO_URL"]
     sanaButtonURL = "https://www.natorisana.love"
     onyankoButtonURL = "http://onyankopbtn.html.xdomain.jp"
 
