@@ -7,6 +7,8 @@ from flask_restful import Resource, reqparse
 from lxml.html import *
 from pymongo import MongoClient
 from requests import get
+if os.path.isfile("mongokey.py"): from mongokey import MONGO_URL
+else: MONGO_URL = os.environ["MONGO_URL"]
 
 
 class voiceScraping(metaclass=ABCMeta):
@@ -125,7 +127,6 @@ class onyankoScraping(voiceScraping):
 
 
 if __name__ == "__main__":
-    MONGO_URL = os.environ["MONGO_URL"]
     sanaButtonURL = "https://www.natorisana.love"
     onyankoButtonURL = "http://onyankopbtn.html.xdomain.jp"
 
