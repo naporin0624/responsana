@@ -5,7 +5,10 @@ import os
 from flask_restful import Resource, reqparse
 # from pydub import AudioSegment
 from pymongo import MongoClient
-MONGO_URL = os.environ["MONGO_URL"]
+
+if os.path.isfile("mongokey.py"): from mongokey import MONGO_URL
+else: MONGO_URL = os.environ["MONGO_URL"]
+
 client = MongoClient(MONGO_URL)
 db = client[urlparse(MONGO_URL).path[1:]]
 co = db.responyanko
